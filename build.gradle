@@ -1,0 +1,31 @@
+plugins {
+    id 'groovy'
+
+}
+
+group 'org.meadowhawk.id'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:2.5.7'
+    testCompile platform("org.spockframework:spock-bom:2.0-M1-groovy-2.5")
+    testCompile "org.spockframework:spock-core"
+}
+
+task collectJars(type: Copy) {
+    into "$buildDir/output/lib"
+    from configurations.testRuntime
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
