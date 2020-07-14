@@ -39,9 +39,9 @@ class SVGBuilder {
 
     static  void generateCircles(Writer writer, byte[] bytes, Pattern pattern){
         String[] colors = pattern.fillColors(bytes)
-
+        String bgColor = (bytes[2]%2==0)?"ffffff": "282828"
         SVGBuilder.createSvg(writer, 100, 100) { width, height ->
-            rect(x: 0, y: 0, width: width, height: height, fill: pattern.buildColorValue("ffffff")) //White backfill
+            rect(x: 0, y: 0, width: width, height: height, fill: pattern.buildColorValue(bgColor)) //White backfill
             colors.each { color->
                 circle(cx:Math.random() * width, cy:Math.random() * height,r:Math.min(width,height)/ (Math.abs(new Random().nextInt() % (25 - 10)) + 10) , fill:pattern.buildColorValue(color))
             }
