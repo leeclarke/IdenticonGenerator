@@ -1,7 +1,6 @@
 package org.meadowhawk.identicon.util
 
 import spock.lang.Specification
-import org.meadowhawk.identicon.SpecHelper
 import java.security.KeyPair
 
 class PatternSpec extends Specification {
@@ -21,7 +20,7 @@ class PatternSpec extends Specification {
     def "Test PATCHWORK Pattern"(){
         when:
         String hexFormat = "%02x"
-        KeyPair keys = SpecHelper.getKeys()
+        KeyPair keys = Helper.getKeys()
         byte[] bytes = keys.getPublic().encoded
         String firstColor = String.format(hexFormat, bytes[0]) + String.format(hexFormat, bytes[1]) + String.format(hexFormat, bytes[2])
         String[] colors = Pattern.PATCHWORK.fillColors(bytes)
