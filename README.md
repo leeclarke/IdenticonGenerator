@@ -6,7 +6,8 @@ If your asking:  An [Identicon](https://en.wikipedia.org/wiki/Identicon) is a vi
 Note: Some of the patterns are using randomization to ensure an interesting pattern while Patchwork, & Dots are derived from the hex value from a public Key.
 
 ## A Few Samples
-DOTS | Patchwork | Monochrome | Trichrome | Random|
+| DOTS | Patchwork | Monochrome | Trichrome | Random|
+|------|-----------|------------|-----------|-------|
 ![DOTS Pattern](./docs/img/dotsIcon.svg) | ![DOTS Pattern](./docs/img/patchworkIcon.svg) | ![Monochrome Pattern](./docs/img/monoIcon.svg) | ![Trichrome Pattern](./docs/img/trichromeIcon.svg) | ![Random Pattern](./docs/img/random.svg)
 
 ## Getting Started

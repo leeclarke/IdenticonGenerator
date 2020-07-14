@@ -10,5 +10,5 @@ build
 **/*.iml
 
 
-*.svg
+/*.svg
 
