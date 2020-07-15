@@ -1,21 +1,40 @@
 plugins {
+    id "com.jfrog.bintray" version "1.8.1"
+    id "maven-publish"
     id 'groovy'
-
 }
 
-group 'org.meadowhawk.id'
-version '1.0-SNAPSHOT'
+group 'org.meadowhawk'
+version '1.0.0'
 
 sourceCompatibility = 1.8
 
 repositories {
+    mavenLocal()
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     implementation 'org.codehaus.groovy:groovy-all:2.5.7'
     testCompile platform("org.spockframework:spock-bom:2.0-M1-groovy-2.5")
     testCompile "org.spockframework:spock-core"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
 }
 
 task collectJars(type: Copy) {
@@ -28,4 +47,69 @@ test {
     testLogging {
         events "passed", "skipped", "failed"
     }
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name "MIT License"
+            url "https://raw.githubusercontent.com/leeclarke/IdenticonGenerator/master/LICENSE"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "leeclarke"
+            name "Lee Clarke"
+            email "lees2bytes@gmail.com"
+        }
+    }
+
+    scm {
+        url "https://github.com/leeclarke/IdentaconGenerator"
+    }
+}
+
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            groupId 'org.meadowhawk'
+            artifactId 'IdenticonGenerator'
+            version '${version}'
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'A lite weight tool for generating Identicons in Java and Groovy.')
+                root.appendNode('name', 'IdenticonGenerator')
+                root.appendNode('url', 'https://github.com/leeclarke/IdenticonGenerator')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getProperty('bintray.user')
+    key = System.getProperty('bintray.key')
+    publications = ['mavenPublication']
+
+    pkg {
+        repo = 'utils'
+        name = 'IdenticonGenerator'
+        userOrg = 'meadowhawk'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/leeclarke/IdenticonGenerator.git'
+        version {
+            name = '1.0.0'
+            desc = '1.0.0'
+            released  = new Date()
+        }
+    }
+    publish = true
 }

@@ -1,6 +1,6 @@
 ![IdenticonGen Logo](./docs/img/IdenticonGen.png)
-# IdentaconGenerator
-A Little tool for generating Identicons in Java and Groovy.
+# IdenticonGenerator
+A lite weight tool for generating Identicons in Java and Groovy.
 
 ### A what?
   An [Identicon](https://en.wikipedia.org/wiki/Identicon) is a visual representation of a hash value, usually of an IP address, that serves to identify a user of a computer system as a form of avatar while protecting the users' privacy. The original Identicon was a 9-block graphic, and the representation has been extended to other graphic forms by third parties.
