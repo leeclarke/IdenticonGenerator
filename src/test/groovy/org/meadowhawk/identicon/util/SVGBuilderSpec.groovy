@@ -55,9 +55,7 @@ class SVGBuilderSpec extends Specification {
          content = writer.toString()
         }
 
-
         assert content != null
         assert content.startsWith("<svg width='100' height='100' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1'>")
-        //TODO: Open up file and validate some of the xml
     }
 }

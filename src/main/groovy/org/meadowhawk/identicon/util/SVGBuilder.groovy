@@ -37,25 +37,27 @@ class SVGBuilder {
         return "rgb(${color.red},${color.green},${color.blue})"
     }
 
-    static  void generateCircles(Writer writer, byte[] bytes, Pattern pattern){
-        String[] colors = pattern.fillColors(bytes)
+    static  void generateCircles(Writer writer, byte[] bytes, Pattern pattern, int width, int height){
+        int colorCt = width
+        String[] colors = pattern.fillColors(bytes, colorCt)
         String bgColor = (bytes[2]%2==0)?"ffffff": "282828"
-        SVGBuilder.createSvg(writer, 100, 100) { width, height ->
-            rect(x: 0, y: 0, width: width, height: height, fill: pattern.buildColorValue(bgColor)) //White backfill
+        SVGBuilder.createSvg(writer, width, height) { w, h ->
+            rect(x: 0, y: 0, width: w, height: h, fill: pattern.buildColorValue(bgColor)) //White backfill
             colors.each { color->
                 circle(cx:Math.random() * width, cy:Math.random() * height,r:Math.min(width,height)/ (Math.abs(new Random().nextInt() % (25 - 10)) + 10) , fill:pattern.buildColorValue(color))
             }
         }
     }
 
-    static void generateGrid(Writer writer, byte[] bytes, Pattern pattern){
-        String[] colors = pattern.fillColors(bytes)
-        SVGBuilder.createSvg(writer, 100, 100) { width, height ->
+    static void generateGrid(Writer writer, byte[] bytes, Pattern pattern, int width, int height){
+        int colorCt = width * height
+        String[] colors = pattern.fillColors(bytes, colorCt)
+        SVGBuilder.createSvg(writer, width, height) { w, h ->
             int x = 0
             int y = 0
             int b = 0
-            while (y < height) {
-                while (x < width) {
+            while (y < h) {
+                while (x < w) {
                     rect(x: x, y: y, width: 10, height: 10, fill: pattern.buildColorValue(colors[b]))
                     x += 10
                     b++

@@ -47,7 +47,7 @@ The interface is intended to be easy so all calls can be made on the static meth
 IdenticonGenerator.generateToFile("TRICHROME", "TEST.SVG")
 ```
 
-#### Want more control where the image gores? Just get an OutputStream so yo can do what you want with it later
+#### Want more control where the image goes? Just get an OutputStream so you can do what you want with it later
 ```
 StringWriter out = new StringWriter()
 

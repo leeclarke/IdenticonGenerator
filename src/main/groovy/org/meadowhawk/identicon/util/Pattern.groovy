@@ -3,7 +3,7 @@ package org.meadowhawk.identicon.util
 import java.awt.Color
 
 enum Pattern {
-    PATCHWORK({byte[] bytes ->
+    PATCHWORK({byte[] bytes, int colorCt ->
         //Take every 3 bytes to generate a color.
         String[] colors = []
         int c = 0
@@ -16,15 +16,17 @@ enum Pattern {
                 c = 0; tmp = ""
             }
         }
-        if(colors.size() <= 100) {colors += colors.take(100 - colors.size())}
-        colors
+        while(colors.size() < colorCt){
+            colors += colors
+        }
+        colors.take(colorCt)
     }, {hxColor ->
         SVGBuilder.rbgColor(Color.decode("#${hxColor}"))
     }),
 
     MIRRORED({},{}),
 
-    DOTS({byte[] bytes ->
+    DOTS({byte[] bytes, int colorCt ->
         //Take every 3 bytes to generate a color.
         String[] colors = []
         int c = 0
@@ -37,39 +39,49 @@ enum Pattern {
                 c = 0; tmp = ""
             }
         }
-        if(colors.size() <= 100) {colors += colors.take(100 - colors.size())}
-        colors
+
+        while(colors.size() < colorCt){
+            colors += colors
+        }
+        colors.take(colorCt)
     },{hxColor ->
         SVGBuilder.rbgColor(Color.decode("#${hxColor}"))
     }),
-    MONOCHROME({ byte[] bytes ->
+    MONOCHROME({ byte[] bytes, int colorCt ->
         String hexFormat = "%02x"
+        int start = (bytes.size()<45)?42:10
         String[] colors = []
-        String theColor = String.format(hexFormat, bytes[42]) + String.format(hexFormat, bytes[43]) + String.format(hexFormat, bytes[44])
+        String theColor = String.format(hexFormat, bytes[start]) + String.format(hexFormat, bytes[start+1]) + String.format(hexFormat, bytes[start+2])
         String white = "FFFFFF"
         bytes.each { b->
             colors += (b%2==0)? theColor: white
         }
-        if(colors.size() > 100) {colors = colors.take(100)}
-        colors
+        while(colors.size() < colorCt){
+            colors += colors
+        }
+        colors.take(colorCt)
     },{hxColor ->
         SVGBuilder.rbgColor(Color.decode("#${hxColor}"))
     }),
-    TRICHROME({ byte[] bytes ->
+    TRICHROME({ byte[] bytes, int colorCt ->
         String[] colors = []
         String theColor = Math.random()
         String theOtherColor = Math.random()
         String white = 0
+
         bytes.each { b->
             colors += (b%2==0)? theColor: ((b%3==0)? theOtherColor:white)
         }
-        colors
+        while(colors.size() < colorCt){
+            colors += colors
+        }
+        colors.take(colorCt)
     },{hxColor ->
         SVGBuilder.hsbColor(hxColor)
     }),
-    RANDOM({ byte[] bytes ->  //ignoring for this
+    RANDOM({ byte[] bytes, int colorCt ->  //ignoring for this
         String[] colors = []
-        100.times {Math.random()}
+        colorCt.times {colors += Math.random()}
         colors
     },{ hxColor -> SVGBuilder.hsbColor(hxColor)})
 
