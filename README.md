@@ -78,7 +78,7 @@ There are a number of Patterns that can be provided to give the Identicon a uniq
 Dive on in or give me a shout! There's a few issues below that need work and I'm open to any expansions etc.
 
 ### TODOs
-[] Reactor the Pattern Enum into a base class. Including closures in an enum was pretty amazing but this would benefit from a default class that can be overridden and allow for more patterns to be created without messing with an enum thats getting kinda ugly/
-[x] Allow for icon size changes, default is currently 100x100
-[] Refine Hex to color algorithm
-[x] Make TRICHROME based off seed.
+- [] Reactor the Pattern Enum into a base class. Including closures in an enum was pretty amazing but this would benefit from a default class that can be overridden and allow for more patterns to be created without messing with an enum thats getting kinda ugly/
+- [x] Allow for icon size changes, default is currently 100x100
+- [] Refine Hex to color algorithm
+- [x] Make TRICHROME based off seed.
