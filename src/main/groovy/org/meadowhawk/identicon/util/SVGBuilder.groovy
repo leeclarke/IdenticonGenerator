@@ -36,6 +36,11 @@ class SVGBuilder {
     static def rbgColor = { Color color ->
         return "rgb(${color.red},${color.green},${color.blue})"
     }
+    static String hexFormat = "%02x"
+
+    static String getHexColor(byte byte1 , byte byte2, byte byte3){
+        String.format(hexFormat, byte1) + String.format(hexFormat, byte2) + String.format(hexFormat, byte3)
+    }
 
     static  void generateCircles(Writer writer, byte[] bytes, Pattern pattern, int width, int height){
         int colorCt = width

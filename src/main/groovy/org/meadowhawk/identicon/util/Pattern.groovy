@@ -24,7 +24,7 @@ enum Pattern {
         SVGBuilder.rbgColor(Color.decode("#${hxColor}"))
     }),
 
-    MIRRORED({},{}),
+    MIRRORED({}{}),
 
     DOTS({byte[] bytes, int colorCt ->
         //Take every 3 bytes to generate a color.
@@ -48,10 +48,9 @@ enum Pattern {
         SVGBuilder.rbgColor(Color.decode("#${hxColor}"))
     }),
     MONOCHROME({ byte[] bytes, int colorCt ->
-        String hexFormat = "%02x"
         int start = (bytes.size()<45)?42:10
         String[] colors = []
-        String theColor = String.format(hexFormat, bytes[start]) + String.format(hexFormat, bytes[start+1]) + String.format(hexFormat, bytes[start+2])
+        String theColor = SVGBuilder.getHexColor(bytes[start],bytes[start+1], bytes[start+2])
         String white = "FFFFFF"
         bytes.each { b->
             colors += (b%2==0)? theColor: white
