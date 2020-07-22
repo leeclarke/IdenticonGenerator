@@ -1,6 +1,7 @@
 package org.meadowhawk.identicon.util
 
 import groovy.xml.MarkupBuilder
+import org.meadowhawk.identicon.pattern.RenderPattern
 
 import java.awt.Color
 
@@ -42,19 +43,19 @@ class SVGBuilder {
         String.format(hexFormat, byte1) + String.format(hexFormat, byte2) + String.format(hexFormat, byte3)
     }
 
-    static  void generateCircles(Writer writer, byte[] bytes, Pattern pattern, int width, int height){
+    static  void generateCircles(Writer writer, byte[] bytes, RenderPattern pattern, int width, int height){
         int colorCt = width
         String[] colors = pattern.fillColors(bytes, colorCt)
         String bgColor = (bytes[2]%2==0)?"ffffff": "282828"
         SVGBuilder.createSvg(writer, width, height) { w, h ->
-            rect(x: 0, y: 0, width: w, height: h, fill: pattern.buildColorValue(bgColor)) //White backfill
+            rect(x: 0, y: 0, width: w, height: h, fill: pattern.colorList(bgColor)) //White backfill
             colors.each { color->
-                circle(cx:Math.random() * width, cy:Math.random() * height,r:Math.min(width,height)/ (Math.abs(new Random().nextInt() % (25 - 10)) + 10) , fill:pattern.buildColorValue(color))
+                circle(cx:Math.random() * width, cy:Math.random() * height,r:Math.min(width,height)/ (Math.abs(new Random().nextInt() % (25 - 10)) + 10) , fill:pattern.colorList(color))
             }
         }
     }
 
-    static void generateGrid(Writer writer, byte[] bytes, Pattern pattern, int width, int height){
+    static void generateGrid(Writer writer, byte[] bytes, RenderPattern pattern, int width, int height){
         int colorCt = width * height
         String[] colors = pattern.fillColors(bytes, colorCt)
         SVGBuilder.createSvg(writer, width, height) { w, h ->
@@ -63,7 +64,7 @@ class SVGBuilder {
             int b = 0
             while (y < h) {
                 while (x < w) {
-                    rect(x: x, y: y, width: 10, height: 10, fill: pattern.buildColorValue(colors[b]))
+                    rect(x: x, y: y, width: 10, height: 10, fill: pattern.colorList(colors[b]))
                     x += 10
                     b++
                 }

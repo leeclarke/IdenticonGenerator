@@ -1,8 +1,10 @@
 package org.meadowhawk.identicon
 
+import org.meadowhawk.identicon.pattern.Dots
+import org.meadowhawk.identicon.pattern.Monochrome
+import org.meadowhawk.identicon.pattern.Patchwork
 import org.meadowhawk.identicon.util.Helper
 import org.meadowhawk.identicon.util.IconSize
-import org.meadowhawk.identicon.util.Pattern
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -19,7 +21,7 @@ class IdenticonGeneratorSpec extends Specification{
         String fileName =  "rainbowIcon.svg"
 
         when:
-        IdenticonGenerator.generateToFile(bytes, Pattern.PATCHWORK, fileName)
+        IdenticonGenerator.generateToFile(bytes, new Patchwork(), fileName)
 
         then:
         assert new File(fileName).exists()
@@ -31,7 +33,7 @@ class IdenticonGeneratorSpec extends Specification{
         byte[] bytes = keys.getPublic().encoded
 
         when:
-        StringWriter writer = IdenticonGenerator.generate(bytes, Pattern.PATCHWORK, IconSize.SMALL)
+        StringWriter writer = IdenticonGenerator.generate(bytes,new Patchwork(), IconSize.SMALL)
 
         then:
         assert writer != null
@@ -45,13 +47,13 @@ class IdenticonGeneratorSpec extends Specification{
         }
     }
 
-    def "Generate a MONOCHROME Styled Identicon"(){
+    def "Generate a MONOCHROME Styled Identicon using the RenderPattern"(){
         given:
         byte[] bytes = keys.getPublic().encoded
-        String fileName =  "monoIcon.svg"
+        String fileName =  "monoIconRP.svg"
 
         when:
-        IdenticonGenerator.generateToFile(bytes, Pattern.MONOCHROME, fileName)
+        IdenticonGenerator.generateToFile(bytes, new Monochrome(), new File(fileName), IconSize.REGULAR)
 
         then:
         File monoFile = new File(fileName)
@@ -64,7 +66,7 @@ class IdenticonGeneratorSpec extends Specification{
 
     def "An error is thrown if the seed is too short"(){
         when: "The seed is too short"
-        IdenticonGenerator.generateToFile("tooShort".getBytes(), Pattern.MONOCHROME, "fileName.svg")
+        IdenticonGenerator.generateToFile("tooShort".getBytes(), new Monochrome(), "fileName.svg")
 
         then:
         thrown IllegalArgumentException
@@ -76,7 +78,7 @@ class IdenticonGeneratorSpec extends Specification{
         String fileName =  "dotsIcon.svg"
 
         when:
-        IdenticonGenerator.generateToFile(bytes, Pattern.DOTS, fileName)
+        IdenticonGenerator.generateToFile(bytes,new Dots(), fileName)
 
         then:
         File dotsFile = new File(fileName)
@@ -89,20 +91,21 @@ class IdenticonGeneratorSpec extends Specification{
         assert dotsContent.endsWith("</svg>")
 
     }
-    def "Generate a TRICHROME Styled Identicon that's LARGE"(){
-        given:
-        byte[] bytes = keys.getPublic().encoded
-        String fileName =  "trichromeIcon.svg"
-        File file = new File(fileName)
 
-        when:
-        IdenticonGenerator.generateToFile(bytes, Pattern.TRICHROME, file, IconSize.LARGE)
-
-        then:
-        assert new File(fileName).exists()
-        String triContent = new FileReader(fileName).text
-        assert triContent.startsWith("<svg width='${IconSize.LARGE.size}' height='${IconSize.LARGE.size}' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1'>")
-        assert triContent.contains("<rect x='0' y='0' width='10' height='10' fill=")
-        assert triContent.endsWith("</svg>")
-    }
+//    def "Generate a TRICHROME Styled Identicon that's LARGE"(){
+//        given:
+//        byte[] bytes = keys.getPublic().encoded
+//        String fileName =  "trichromeIcon.svg"
+//        File file = new File(fileName)
+//
+//        when:
+//        IdenticonGenerator.generateToFile(bytes, Pattern.TRICHROME, file, IconSize.LARGE)
+//
+//        then:
+//        assert new File(fileName).exists()
+//        String triContent = new FileReader(fileName).text
+//        assert triContent.startsWith("<svg width='${IconSize.LARGE.size}' height='${IconSize.LARGE.size}' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1'>")
+//        assert triContent.contains("<rect x='0' y='0' width='10' height='10' fill=")
+//        assert triContent.endsWith("</svg>")
+//    }
 }
