@@ -2,7 +2,7 @@ package org.meadowhawk.identicon.pattern
 
 import org.meadowhawk.identicon.util.SVGBuilder
 
-class Random implements RenderPattern {
+class RandomPattern implements RenderPattern {
     @Override
     void render(StringWriter writer, byte[] bytes, int width, int height) {
         SVGBuilder.generateGrid(writer, bytes, this, width, height)

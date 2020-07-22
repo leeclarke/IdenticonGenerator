@@ -3,6 +3,8 @@ package org.meadowhawk.identicon
 import org.meadowhawk.identicon.pattern.Dots
 import org.meadowhawk.identicon.pattern.Monochrome
 import org.meadowhawk.identicon.pattern.Patchwork
+import org.meadowhawk.identicon.pattern.RandomPattern
+import org.meadowhawk.identicon.pattern.Trichrome
 import org.meadowhawk.identicon.util.Helper
 import org.meadowhawk.identicon.util.IconSize
 import spock.lang.Shared
@@ -15,13 +17,13 @@ class IdenticonGeneratorSpec extends Specification{
     @Shared
     KeyPair keys = Helper.getKeys()
 
-    def "Generate a Random/rainbow Styled Identicon"(){
+    def "Generate a Random Styled Identicon"(){
         given:
         byte[] bytes = keys.getPublic().encoded
-        String fileName =  "rainbowIcon.svg"
+        String fileName =  "rnd.svg"
 
         when:
-        IdenticonGenerator.generateToFile(bytes, new Patchwork(), fileName)
+        IdenticonGenerator.generateToFile(bytes, new RandomPattern(), fileName)
 
         then:
         assert new File(fileName).exists()
@@ -92,20 +94,37 @@ class IdenticonGeneratorSpec extends Specification{
 
     }
 
-//    def "Generate a TRICHROME Styled Identicon that's LARGE"(){
-//        given:
-//        byte[] bytes = keys.getPublic().encoded
-//        String fileName =  "trichromeIcon.svg"
-//        File file = new File(fileName)
-//
-//        when:
-//        IdenticonGenerator.generateToFile(bytes, Pattern.TRICHROME, file, IconSize.LARGE)
-//
-//        then:
-//        assert new File(fileName).exists()
-//        String triContent = new FileReader(fileName).text
-//        assert triContent.startsWith("<svg width='${IconSize.LARGE.size}' height='${IconSize.LARGE.size}' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1'>")
-//        assert triContent.contains("<rect x='0' y='0' width='10' height='10' fill=")
-//        assert triContent.endsWith("</svg>")
-//    }
+    def "Generate a TRICHROME Styled Identicon that's LARGE"(){
+        given:
+        byte[] bytes = keys.getPublic().encoded
+        String fileName =  "trichromeIcon.svg"
+        File file = new File(fileName)
+
+        when:
+        IdenticonGenerator.generateToFile(bytes, new Trichrome(), file, IconSize.LARGE)
+
+        then:
+        assert new File(fileName).exists()
+        String triContent = new FileReader(fileName).text
+        assert triContent.startsWith("<svg width='${IconSize.LARGE.size}' height='${IconSize.LARGE.size}' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1'>")
+        assert triContent.contains("<rect x='0' y='0' width='10' height='10' fill=")
+        assert triContent.endsWith("</svg>")
+    }
+
+
+    def "When calling the simplified generate method it works just like the other file gen methods."(){
+        given:
+        def filePath = "simpleTri.svg"
+        def pattern = "Trichrome"
+
+        when:
+        IdenticonGenerator.generateToFile(pattern, filePath)
+
+        then:
+        assert new File(filePath).exists()
+        String triContent = new FileReader(filePath).text
+        assert triContent.startsWith("<svg width='${IconSize.REGULAR.size}' height='${IconSize.REGULAR.size}' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1'>")
+        assert triContent.contains("<rect x='0' y='0' width='10' height='10' fill=")
+        assert triContent.endsWith("</svg>")
+    }
 }

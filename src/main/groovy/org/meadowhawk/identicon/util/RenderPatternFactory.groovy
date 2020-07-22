@@ -3,24 +3,30 @@ package org.meadowhawk.identicon.util
 import org.meadowhawk.identicon.pattern.Dots
 import org.meadowhawk.identicon.pattern.Monochrome
 import org.meadowhawk.identicon.pattern.Patchwork
-import org.meadowhawk.identicon.pattern.Random
+import org.meadowhawk.identicon.pattern.RandomPattern
 import org.meadowhawk.identicon.pattern.RenderPattern
 import org.meadowhawk.identicon.pattern.Trichrome
 
 class RenderPatternFactory {
     static RenderPattern getPattern(String patternName){
-        switch (patternName.toUpperCase()){
+        def ptrnNameUpper =patternName.toUpperCase()
+        RenderPattern pattern = new RandomPattern()
+        switch (ptrnNameUpper){
             case "MONOCHROME":
-                new Monochrome()
+                pattern = new Monochrome()
+                break
             case "TRICHROME":
-                new Trichrome()
+                pattern = new Trichrome()
+                break
             case "PATCHWORK":
-                new Patchwork()
+                pattern = new Patchwork()
+                break
             case "DOTS":
-                new Dots()
+                pattern = new Dots()
+                break
             case "RANDOM":
-            default:
-                new Random()
+                pattern = new RandomPattern()
         }
+        pattern
     }
 }

@@ -11,12 +11,12 @@ import static org.meadowhawk.identicon.util.IconSize.*
 class IdenticonGenerator {
     static boolean generateToFile(byte[] bytes, String pattern, File file, IconSize size){
         file.withWriter { writer ->
-            writer.write(IdenticonGenerator.generate(bytes, pattern, size).toString())
+            writer.write(IdenticonGenerator.generate(bytes, RenderPatternFactory.getPattern(pattern), size).toString())
         }
     }
 
     static boolean generateToFile(String pattern, String filePath){
-        generateToFile(Helper.getRandomSeed(), RenderPatternFactory.getPattern(pattern), filePath, IconSize.REGULAR)
+        generateToFile(Helper.getRandomSeed(), pattern, new File(filePath), IconSize.REGULAR)
     }
 
     static boolean generateToFile(byte[] bytes, RenderPattern pattern, File file, IconSize size){
