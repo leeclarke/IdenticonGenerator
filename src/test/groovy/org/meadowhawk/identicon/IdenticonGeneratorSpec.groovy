@@ -68,7 +68,7 @@ class IdenticonGeneratorSpec extends Specification{
 
     def "An error is thrown if the seed is too short"(){
         when: "The seed is too short"
-        IdenticonGenerator.generateToFile("tooShort".getBytes(), new Monochrome(), "fileName.svg")
+        IdenticonGenerator.generateToFile("tooShort".getBytes(), new Monochrome(), "errorFile.svg")
 
         then:
         thrown IllegalArgumentException

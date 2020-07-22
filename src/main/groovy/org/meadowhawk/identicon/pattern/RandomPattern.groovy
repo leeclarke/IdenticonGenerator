@@ -14,5 +14,5 @@ class RandomPattern implements RenderPattern {
         colors
     }
 
-    def colorList = { hxColor -> SVGBuilder.hsbColor(hxColor)}
+    def renderColor = { hxColor -> SVGBuilder.hsbColor(hxColor)}
 }

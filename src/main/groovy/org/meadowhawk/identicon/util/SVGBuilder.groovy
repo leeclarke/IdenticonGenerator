@@ -48,9 +48,9 @@ class SVGBuilder {
         String[] colors = pattern.fillColors(bytes, colorCt)
         String bgColor = (bytes[2]%2==0)?"ffffff": "282828"
         SVGBuilder.createSvg(writer, width, height) { w, h ->
-            rect(x: 0, y: 0, width: w, height: h, fill: pattern.colorList(bgColor)) //White backfill
+            rect(x: 0, y: 0, width: w, height: h, fill: pattern.renderColor(bgColor)) //White backfill
             colors.each { color->
-                circle(cx:Math.random() * width, cy:Math.random() * height,r:Math.min(width,height)/ (Math.abs(new Random().nextInt() % (25 - 10)) + 10) , fill:pattern.colorList(color))
+                circle(cx:Math.random() * width, cy:Math.random() * height,r:Math.min(width,height)/ (Math.abs(new Random().nextInt() % (25 - 10)) + 10) , fill:pattern.renderColor(color))
             }
         }
     }
@@ -64,7 +64,7 @@ class SVGBuilder {
             int b = 0
             while (y < h) {
                 while (x < w) {
-                    rect(x: x, y: y, width: 10, height: 10, fill: pattern.colorList(colors[b]))
+                    rect(x: x, y: y, width: 10, height: 10, fill: pattern.renderColor(colors[b]))
                     x += 10
                     b++
                 }

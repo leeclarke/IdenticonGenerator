@@ -31,7 +31,7 @@ class Dots implements  RenderPattern{
         colors.take(colorCt)
     }
 
-    def colorList = {hxColor ->
+    def renderColor = {hxColor ->
         SVGBuilder.rbgColor(Color.decode("#${hxColor}"))
     }
 }

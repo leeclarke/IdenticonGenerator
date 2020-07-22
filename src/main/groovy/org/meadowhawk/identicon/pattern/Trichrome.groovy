@@ -25,7 +25,7 @@ class Trichrome implements RenderPattern {
         colors.take(colorCt)
     }
 
-    def colorList = {hxColor ->
+    def renderColor = {hxColor ->
         SVGBuilder.hsbColor(hxColor)
     }
 
