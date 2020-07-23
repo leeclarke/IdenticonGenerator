@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'org.meadowhawk'
-version '1.0.0'
+version '1.1.0'
 
 sourceCompatibility = 1.8
 
@@ -106,8 +106,8 @@ bintray {
         licenses = ['MIT']
         vcsUrl = 'https://github.com/leeclarke/IdenticonGenerator.git'
         version {
-            name = '1.0.0'
-            desc = '1.0.0'
+            name = '1.1.0'
+            desc = '1.1.0'
             released  = new Date()
         }
     }

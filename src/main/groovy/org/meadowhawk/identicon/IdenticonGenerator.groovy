@@ -1,53 +1,43 @@
 package org.meadowhawk.identicon
 
+import org.meadowhawk.identicon.pattern.RenderPattern
 import org.meadowhawk.identicon.util.Helper
-import org.meadowhawk.identicon.util.Pattern
-import org.meadowhawk.identicon.util.SVGBuilder
+import org.meadowhawk.identicon.util.IconSize
+import org.meadowhawk.identicon.util.RenderPatternFactory
+
+import static org.meadowhawk.identicon.util.IconSize.*
+
 
 class IdenticonGenerator {
-
-    static boolean generateToFile(byte[] bytes, Pattern pattern, File file){
-        FileWriter fileWriter = new FileWriter(file)
-        fileWriter.withWriter {
-            fileWriter.write(IdenticonGenerator.generate(bytes, pattern).toString())
+    static boolean generateToFile(byte[] bytes, String pattern, File file, IconSize size){
+        file.withWriter { writer ->
+            writer.write(IdenticonGenerator.generate(bytes, RenderPatternFactory.getPattern(pattern), size).toString())
         }
-    }
-
-    static boolean generateToFile(byte[] bytes, Pattern pattern, String filePath){
-        generateToFile(bytes, pattern, new File(filePath))
-    }
-
-    static boolean generateToFile(byte[] bytes, String pattern, String filePath){
-        generateToFile(bytes, Pattern.fromString(pattern), new File(filePath))
     }
 
     static boolean generateToFile(String pattern, String filePath){
-        generateToFile(Helper.getRandomSeed(), Pattern.fromString(pattern), new File(filePath))
+        generateToFile(Helper.getRandomSeed(), pattern, new File(filePath), IconSize.REGULAR)
     }
 
-    static StringWriter generate(byte[] bytes, Pattern pattern){
-        def writer = new  StringWriter()
-        switch (pattern){
-            case Pattern.MIRRORED:
-                SVGBuilder.generateGrid(writer, bytes, Pattern.MIRRORED)
-                break
-            case Pattern.MONOCHROME:
-                SVGBuilder.generateGrid(writer, bytes, Pattern.MONOCHROME)
-                break
-            case Pattern.TRICHROME:
-                SVGBuilder.generateGrid(writer, bytes, Pattern.TRICHROME)
-                break
-            case Pattern.PATCHWORK:
-                SVGBuilder.generateGrid(writer, bytes, Pattern.PATCHWORK)
-                break
-            case Pattern.DOTS:
-                SVGBuilder.generateCircles(writer, bytes, Pattern.DOTS)
-                break
-            case Pattern.RANDOM:
-            default:
-                SVGBuilder.generateGrid(writer, bytes, Pattern.RANDOM)
-                break
+    static boolean generateToFile(byte[] bytes, RenderPattern pattern, File file, IconSize size){
+        file.withWriter { writer ->
+            writer.write(IdenticonGenerator.generate(bytes, pattern, size).toString())
         }
+    }
+
+    static boolean generateToFile(byte[] bytes, RenderPattern pattern, String filePath){
+        generateToFile(bytes, pattern, new File(filePath), REGULAR)
+    }
+
+
+    static StringWriter generate(byte[] bytes, RenderPattern pattern, IconSize size){
+        if (bytes.size() < 20) throw new IllegalArgumentException("Input seed should be 20 chars at least to produce good randomness. Seed Len= ${bytes.size()}")
+        def writer = new  StringWriter()
+        def width = size.getSize()
+        def height = size.getSize()
+        pattern.render(writer, bytes, width, height)
         writer
     }
+
+
 }
